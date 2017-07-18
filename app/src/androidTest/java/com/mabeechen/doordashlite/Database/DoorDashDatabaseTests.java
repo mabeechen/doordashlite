@@ -19,6 +19,8 @@ import static org.junit.Assert.*;
 /**
  * Tests database creation
  *
+ * @author mabeechen
+ * @since 7/17/17
  */
 @RunWith(AndroidJUnit4.class)
 public class DoorDashDatabaseTests {

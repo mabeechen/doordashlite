@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import com.mabeechen.doordashlite.database.DoorDashDatabase;
 
 /**
- *  Provides create, read, update, and delete functionality related to the
+ *  Provides create, read, update, and delete functionality related to the restaurants table
+ *
+ *  @author mabeechen
+ *  @since 7/16/17
  */
 public class RestaurantsDBHelper {
 

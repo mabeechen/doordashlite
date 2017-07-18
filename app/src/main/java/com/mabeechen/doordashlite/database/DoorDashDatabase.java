@@ -9,7 +9,7 @@ import android.text.TextUtils;
  * Manages the DoorDashLite database
  *
  * @author mabeechen
- * @since 7/17/2017
+ * @since 7/15/2017
  */
 public class DoorDashDatabase extends SQLiteOpenHelper {
     // DB Info
@@ -27,9 +27,27 @@ public class DoorDashDatabase extends SQLiteOpenHelper {
     public static final String SEARCH_RESULTS_TABLE_NAME = "search_results";
 
     /**
+     * Status for restaurant search results
+     */
+    public enum StatusType {
+        UNKNOWN(0),
+        UNAVAILABLE(1),
+        PRE_ORDER (2),
+        OPEN(3);
+        private int mValue;
+
+        private StatusType(int value) {
+            this.mValue = value;
+        }
+
+        public int toInt() {
+            return mValue;
+        }
+    }
+    /**
      * Constructor
      *
-     * @param context THe context to use for the db
+     * @param context The context to use for the db
      */
     public DoorDashDatabase(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -88,7 +106,7 @@ public class DoorDashDatabase extends SQLiteOpenHelper {
         public static final String CITY = "city";
         public static final String STATE = "state";
         public static final String PRINT_ADDRESS = "print_address";
-        public static final String FAVORITE = "favorite";
+        public static final String IS_FAVORITE = "is_favorite";
     }
 
     /**
@@ -97,7 +115,9 @@ public class DoorDashDatabase extends SQLiteOpenHelper {
     public static final class SearchResultsTableColumns extends CommonTableColumns {
         public static final String RESTAURANT_ID = "restaurant_id";
         public static final String STATUS_TYPE = "status_type";
-        public static final String STATUS = "status";
+        public static final String STATUS_TEXT = "status_text";
+        public static final String IS_DIRTY = "is_dirty";
+        public static final String ASAP_TIME = "asap_time";
     }
 
     /**
@@ -115,14 +135,16 @@ public class DoorDashDatabase extends SQLiteOpenHelper {
             + RestaurantTableColumns.CITY + " " + SQL_TYPE_INTEGER + ", "
             + RestaurantTableColumns.STATE + " " + SQL_TYPE_TEXT + ", "
             + RestaurantTableColumns.PRINT_ADDRESS + " " + SQL_TYPE_TEXT + ", "
-            + RestaurantTableColumns.FAVORITE + " " + SQL_TYPE_BOOLEAN;
+            + RestaurantTableColumns.IS_FAVORITE + " " + SQL_TYPE_BOOLEAN;
 
     /**
      * SQL columns definition for search result table.
      */
     private static final String SEARCH_RESULTS_COLUMN_SQL = SearchResultsTableColumns.RESTAURANT_ID + " " + SQL_TYPE_INTEGER + ", "
             + SearchResultsTableColumns.STATUS_TYPE + " " + SQL_TYPE_TEXT + ", "
-            + SearchResultsTableColumns.STATUS + " " + SQL_TYPE_TEXT + ", "
+            + SearchResultsTableColumns.STATUS_TEXT + " " + SQL_TYPE_INTEGER + ", "
+            + SearchResultsTableColumns.IS_DIRTY + " " + SQL_TYPE_BOOLEAN + ", "
+            + SearchResultsTableColumns.ASAP_TIME + " " + SQL_TYPE_INTEGER + ", "
             + "FOREIGN KEY(" + SearchResultsTableColumns.RESTAURANT_ID + ") REFERENCES "
             + RESTAURANT_TABLE_NAME + "(" + RestaurantTableColumns._ID + ") ON DELETE CASCADE";
 }

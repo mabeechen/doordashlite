@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Tests database creation
+ * Tests the RestaurantDBHelper class
  *
  * @author mabeechen
  * @since 7/16/17
