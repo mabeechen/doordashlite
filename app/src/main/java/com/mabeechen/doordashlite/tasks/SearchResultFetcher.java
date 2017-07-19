@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.util.Log;
 
 import com.mabeechen.doordashlite.database.DoorDashDatabase;
+import com.mabeechen.doordashlite.tasks.models.Address;
 import com.mabeechen.doordashlite.tasks.models.SearchResult;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.mabeechen.doordashlite.database.DoorDashDatabase.*;
 /**
  * Created by marbe on 7/18/2017.
  */
@@ -76,13 +78,51 @@ public class SearchResultFetcher implements Fetcher {
     }
 
     private void parseData(List<SearchResult> results) {
-        // TODO: parse the data
         for(SearchResult result : results) {
             ContentValues values = new ContentValues();
-            values.put(DoorDashDatabase.RestaurantTableColumns.DELIVERY_FEE, result.getDeliveryFee());
-            values.put(DoorDashDatabase.RestaurantTableColumns.BUSINESS_ID, result.getBusinessId());
-            values.put(DoorDashDatabase.RestaurantTableColumns.NAME, result.getName());
+            values.put(RestaurantTableColumns.DELIVERY_FEE, result.getDeliveryFee());
+            values.put(RestaurantTableColumns.BUSINESS_ID, result.getBusinessId());
+            values.put(RestaurantTableColumns.NAME, result.getName());
+            values.put(RestaurantTableColumns.DESCRIPTION, result.getDescription());
+            values.put(RestaurantTableColumns.AVG_RATING, result.getYelpRating());
+            values.put(RestaurantTableColumns.RATING_COUNT, result.getYelpReviewCount());
+            values.put(RestaurantTableColumns.DD_PARTIAL_URL, result.getUrl());
+            values.put(RestaurantTableColumns.IMAGE_URL, result.getCoverImgUrl());
+            if(result.getAddress() != null) {
+                Address address = result.getAddress();
+                values.put(RestaurantTableColumns.STREET, address.getStreet());
+                values.put(RestaurantTableColumns.CITY, address.getCity());
+                values.put(RestaurantTableColumns.STATE, address.getState());
+                values.put(RestaurantTableColumns.PRINT_ADDRESS, address.getPrintableAddress());
+            }
+            values.put(SearchResultsTableColumns.STATUS_TEXT, result.getStatus());
+            values.put(SearchResultsTableColumns.ASAP_TIME, result.getAsapTime());
+            values.put(SearchResultsTableColumns.STATUS_TYPE, parseStatusType(result.getStatusType()).toInt());
+
             mData.add(values);
         }
+    }
+
+    /**
+     * Creates a status type based on the json string value passed in
+     *
+     * @param statusTypeString The json string representation of statusType
+     *
+     * @return The status type, unknown if it's not recognized
+     */
+    private StatusType parseStatusType(String statusTypeString) {
+        StatusType retVal = StatusType.UNKNOWN;
+        switch(statusTypeString) {
+            case "open":
+                retVal = StatusType.OPEN;
+                break;
+            case "pre-order":
+                retVal = StatusType.PRE_ORDER;
+                break;
+            case "unavailable":
+                retVal = StatusType.UNAVAILABLE;
+                break;
+        }
+        return retVal;
     }
 }

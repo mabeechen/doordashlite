@@ -69,12 +69,11 @@ public class DoorDashDatabase extends SQLiteOpenHelper {
     }
 
     /**
-     * Create a table without property columns
+     * Creates a table in the database
      *
-     * @param db                - SQLite database
-     * @param tableName         - the name of the table to be created
-     * @param additionalColumns - columns of the table, the primary key _ID will be added
-     *                          automatically
+     * @param db The database to use
+     * @param tableName The table name to create
+     * @param additionalColumns Additional columns beyond the _id column to add to the table in proper form
      */
     public static void createTable(SQLiteDatabase db, String tableName, String additionalColumns) {
         String SqlToExecute = "CREATE TABLE IF NOT EXISTS " + tableName + " ( " + CommonTableColumns._ID

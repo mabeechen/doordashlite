@@ -25,60 +25,60 @@ public class SearchResult {
 //    @SerializedName("merchant_promotions")
 //    @Expose
 //    private List<Object> merchantPromotions = null;
-//    @SerializedName("average_rating")
-//    @Expose
-//    private Double averageRating;
+    @SerializedName("average_rating")
+    @Expose
+    private Double averageRating;
 //    @SerializedName("menus")
 //    @Expose
 //    private List<Menu> menus = null;
 //    @SerializedName("composite_score")
 //    @Expose
 //    private Integer compositeScore;
-//    @SerializedName("status_type")
-//    @Expose
-//    private String statusType;
+    @SerializedName("status_type")
+    @Expose
+    private String statusType;
 //    @SerializedName("is_only_catering")
 //    @Expose
 //    private Boolean isOnlyCatering;
-//    @SerializedName("status")
-//    @Expose
-//    private String status;
+    @SerializedName("status")
+    @Expose
+    private String status;
 //    @SerializedName("number_of_ratings")
 //    @Expose
 //    private Integer numberOfRatings;
-//    @SerializedName("asap_time")
-//    @Expose
-//    private Integer asapTime;
-//    @SerializedName("description")
-//    @Expose
-//    private String description;
+    @SerializedName("asap_time")
+    @Expose
+    private Integer asapTime;
+    @SerializedName("description")
+    @Expose
+    private String description;
 //    @SerializedName("business")
 //    @Expose
 //    private Business business;
 //    @SerializedName("tags")
 //    @Expose
 //    private List<String> tags = null;
-//    @SerializedName("yelp_review_count")
-//    @Expose
-//    private Integer yelpReviewCount;
+    @SerializedName("yelp_review_count")
+    @Expose
+    private Integer yelpReviewCount;
     @SerializedName("business_id")
     @Expose
     private Integer businessId;
 //    @SerializedName("extra_sos_delivery_fee")
 //    @Expose
 //    private Integer extraSosDeliveryFee;
-//    @SerializedName("yelp_rating")
-//    @Expose
-//    private Double yelpRating;
-//    @SerializedName("cover_img_url")
-//    @Expose
-//    private String coverImgUrl;
+    @SerializedName("yelp_rating")
+    @Expose
+    private Double yelpRating;
+    @SerializedName("cover_img_url")
+    @Expose
+    private String coverImgUrl;
 //    @SerializedName("header_img_url")
 //    @Expose
 //    private String headerImgUrl;
-//    @SerializedName("address")
-//    @Expose
-//    private Address address;
+    @SerializedName("address")
+    @Expose
+    private Address address;
 //    @SerializedName("price_range")
 //    @Expose
 //    private Integer priceRange;
@@ -91,9 +91,9 @@ public class SearchResult {
 //    @SerializedName("is_newly_added")
 //    @Expose
 //    private Boolean isNewlyAdded;
-//    @SerializedName("url")
-//    @Expose
-//    private String url;
+    @SerializedName("url")
+    @Expose
+    private String url;
 //    @SerializedName("service_rate")
 //    @Expose
 //    private Double serviceRate;
@@ -152,13 +152,13 @@ public class SearchResult {
 //        this.merchantPromotions = merchantPromotions;
 //    }
 //
-//    public Double getAverageRating() {
-//        return averageRating;
-//    }
-//
-//    public void setAverageRating(Double averageRating) {
-//        this.averageRating = averageRating;
-//    }
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
 //
 //    public List<Menu> getMenus() {
 //        return menus;
@@ -175,15 +175,15 @@ public class SearchResult {
 //    public void setCompositeScore(Integer compositeScore) {
 //        this.compositeScore = compositeScore;
 //    }
-//
-//    public String getStatusType() {
-//        return statusType;
-//    }
-//
-//    public void setStatusType(String statusType) {
-//        this.statusType = statusType;
-//    }
-//
+
+    public String getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(String statusType) {
+        this.statusType = statusType;
+    }
+
 //    public Boolean getIsOnlyCatering() {
 //        return isOnlyCatering;
 //    }
@@ -191,15 +191,15 @@ public class SearchResult {
 //    public void setIsOnlyCatering(Boolean isOnlyCatering) {
 //        this.isOnlyCatering = isOnlyCatering;
 //    }
-//
-//    public String getStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(String status) {
-//        this.status = status;
-//    }
-//
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 //    public Integer getNumberOfRatings() {
 //        return numberOfRatings;
 //    }
@@ -207,22 +207,22 @@ public class SearchResult {
 //    public void setNumberOfRatings(Integer numberOfRatings) {
 //        this.numberOfRatings = numberOfRatings;
 //    }
-//
-//    public Integer getAsapTime() {
-//        return asapTime;
-//    }
-//
-//    public void setAsapTime(Integer asapTime) {
-//        this.asapTime = asapTime;
-//    }
-//
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
+
+    public Integer getAsapTime() {
+        return asapTime;
+    }
+
+    public void setAsapTime(Integer asapTime) {
+        this.asapTime = asapTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 //
 //    public Business getBusiness() {
 //        return business;
@@ -239,15 +239,15 @@ public class SearchResult {
 //    public void setTags(List<String> tags) {
 //        this.tags = tags;
 //    }
-//
-//    public Integer getYelpReviewCount() {
-//        return yelpReviewCount;
-//    }
-//
-//    public void setYelpReviewCount(Integer yelpReviewCount) {
-//        this.yelpReviewCount = yelpReviewCount;
-//    }
-//
+
+    public Integer getYelpReviewCount() {
+        return yelpReviewCount;
+    }
+
+    public void setYelpReviewCount(Integer yelpReviewCount) {
+        this.yelpReviewCount = yelpReviewCount;
+    }
+
     public Integer getBusinessId() {
         return businessId;
     }
@@ -264,21 +264,21 @@ public class SearchResult {
 //        this.extraSosDeliveryFee = extraSosDeliveryFee;
 //    }
 //
-//    public Double getYelpRating() {
-//        return yelpRating;
-//    }
-//
-//    public void setYelpRating(Double yelpRating) {
-//        this.yelpRating = yelpRating;
-//    }
-//
-//    public String getCoverImgUrl() {
-//        return coverImgUrl;
-//    }
-//
-//    public void setCoverImgUrl(String coverImgUrl) {
-//        this.coverImgUrl = coverImgUrl;
-//    }
+    public Double getYelpRating() {
+        return yelpRating;
+    }
+
+    public void setYelpRating(Double yelpRating) {
+        this.yelpRating = yelpRating;
+    }
+
+    public String getCoverImgUrl() {
+        return coverImgUrl;
+    }
+
+    public void setCoverImgUrl(String coverImgUrl) {
+        this.coverImgUrl = coverImgUrl;
+    }
 //
 //    public String getHeaderImgUrl() {
 //        return headerImgUrl;
@@ -288,13 +288,13 @@ public class SearchResult {
 //        this.headerImgUrl = headerImgUrl;
 //    }
 //
-//    public Address getAddress() {
-//        return address;
-//    }
-//
-//    public void setAddress(Address address) {
-//        this.address = address;
-//    }
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 //
 //    public Integer getPriceRange() {
 //        return priceRange;
@@ -328,13 +328,13 @@ public class SearchResult {
 //        this.isNewlyAdded = isNewlyAdded;
 //    }
 //
-//    public String getUrl() {
-//        return url;
-//    }
-//
-//    public void setUrl(String url) {
-//        this.url = url;
-//    }
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 //
 //    public Double getServiceRate() {
 //        return serviceRate;
