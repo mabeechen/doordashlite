@@ -103,6 +103,44 @@ public class RestaurantsDBHelper {
     }
 
     /**
+     * Finds the rowId for a restaurant in the table based on it's business Id
+     *
+     * @param db The database to use
+     * @param businessId The business Id of the restaurant to update
+     *
+     * @return The number of updated rows
+     */
+    public static long findRestaurantId(SQLiteDatabase db, String businessId) {
+        String selection = DoorDashDatabase.RestaurantTableColumns.BUSINESS_ID + "=?";
+        String[] selectArgs = {businessId};
+        Cursor c = RestaurantsDBHelper.queryRestaurantonBusinessId(db, businessId);
+        long retVal;
+        if(c.moveToFirst()) {
+            retVal = c.getLong(c.getColumnIndex(DoorDashDatabase.RestaurantTableColumns._ID));
+            c.close();
+        } else {
+            retVal =  -1;
+        }
+        return retVal;
+    }
+
+    /**
+     * Updates the values for a restaurant
+     *
+     * @param db The database to use
+     * @param businessId The business Id of the restaurant to update
+     * @param values The values to update
+     *
+     * @return The number of updated rows
+     */
+    public static int updateRestaurantOnBusinessId(SQLiteDatabase db, String businessId, ContentValues values) {
+        String selection = DoorDashDatabase.RestaurantTableColumns.BUSINESS_ID + "=?";
+        String[] selectArgs = {businessId};
+
+        return db.update(DoorDashDatabase.RESTAURANT_TABLE_NAME, values, selection, selectArgs);
+    }
+
+    /**
      * Returns a cursor with data for all restaurants in the db
      *
      * @param db The database to use

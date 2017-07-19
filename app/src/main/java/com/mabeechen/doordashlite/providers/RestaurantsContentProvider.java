@@ -72,4 +72,8 @@ public class RestaurantsContentProvider extends ContentProvider {
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         return 0;
     }
+
+    private void runRefreshTask() {
+
+    }
 }

@@ -17,6 +17,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mabeechen.doordashlite.database.DoorDashDatabase;
+import com.mabeechen.doordashlite.dbhelpers.SearchResultsDBHelper;
+import com.mabeechen.doordashlite.tasks.RefreshTask;
+import com.mabeechen.doordashlite.tasks.SearchResultFetcher;
+import com.mabeechen.doordashlite.tasks.SearchResultsDataWriter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +41,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        SearchResultsDataWriter writer = new SearchResultsDataWriter(this);
+        SearchResultFetcher fetcher = new SearchResultFetcher();
+        RefreshTask task = new RefreshTask(fetcher, writer);
+        new Thread(task).start();
     }
 
     @Override
