@@ -21,6 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:name=".providers.RestaurantsContentProvider"
+            android:authorities="com.mabeechen.doordashlite.restaurants"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="true"
+            android:syncable="true" />
     </application>
 
 </manifest>

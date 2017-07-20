@@ -76,7 +76,8 @@ public class DoorDashDatabase extends SQLiteOpenHelper {
      * @param additionalColumns Additional columns beyond the _id column to add to the table in proper form
      */
     public static void createTable(SQLiteDatabase db, String tableName, String additionalColumns) {
-        String SqlToExecute = "CREATE TABLE IF NOT EXISTS " + tableName + " ( " + CommonTableColumns._ID
+        String SqlToExecute = "CREATE TABLE IF NOT EXISTS "
+                + tableName + " ( " + CommonTableColumns._ID
                 + " INTEGER PRIMARY KEY AUTOINCREMENT "
                 + (TextUtils.isEmpty(additionalColumns) ? "" : ", " + additionalColumns) + " );";
         db.execSQL(SqlToExecute);

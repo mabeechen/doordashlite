@@ -52,9 +52,9 @@ public class SearchResult {
     @SerializedName("description")
     @Expose
     private String description;
-//    @SerializedName("business")
-//    @Expose
-//    private Business business;
+    @SerializedName("business")
+    @Expose
+    private Business business;
 //    @SerializedName("tags")
 //    @Expose
 //    private List<String> tags = null;
@@ -223,15 +223,15 @@ public class SearchResult {
     public void setDescription(String description) {
         this.description = description;
     }
-//
-//    public Business getBusiness() {
-//        return business;
-//    }
-//
-//    public void setBusiness(Business business) {
-//        this.business = business;
-//    }
-//
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
+
 //    public List<String> getTags() {
 //        return tags;
 //    }

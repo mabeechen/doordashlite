@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.mabeechen.doordashlite.database.DoorDashDatabase;
 import com.mabeechen.doordashlite.tasks.models.Address;
+import com.mabeechen.doordashlite.tasks.models.Business;
 import com.mabeechen.doordashlite.tasks.models.SearchResult;
 
 import java.io.IOException;
@@ -82,7 +83,10 @@ public class SearchResultFetcher implements Fetcher {
             ContentValues values = new ContentValues();
             values.put(RestaurantTableColumns.DELIVERY_FEE, result.getDeliveryFee());
             values.put(RestaurantTableColumns.BUSINESS_ID, result.getBusinessId());
-            values.put(RestaurantTableColumns.NAME, result.getName());
+            if(result.getBusiness() != null) {
+                Business business = result.getBusiness();
+                values.put(RestaurantTableColumns.NAME, business.getName());
+            }
             values.put(RestaurantTableColumns.DESCRIPTION, result.getDescription());
             values.put(RestaurantTableColumns.AVG_RATING, result.getYelpRating());
             values.put(RestaurantTableColumns.RATING_COUNT, result.getYelpReviewCount());

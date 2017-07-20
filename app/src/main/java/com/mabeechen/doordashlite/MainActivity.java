@@ -2,11 +2,17 @@ package com.mabeechen.doordashlite;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.content.Loader;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,14 +22,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.mabeechen.doordashlite.adapters.SearchResultsAdapter;
 import com.mabeechen.doordashlite.database.DoorDashDatabase;
 import com.mabeechen.doordashlite.dbhelpers.SearchResultsDBHelper;
+import com.mabeechen.doordashlite.providers.RestaurantsContentProvider;
 import com.mabeechen.doordashlite.tasks.RefreshTask;
 import com.mabeechen.doordashlite.tasks.SearchResultFetcher;
 import com.mabeechen.doordashlite.tasks.SearchResultsDataWriter;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements LoaderManager.LoaderCallbacks<Cursor>, NavigationView.OnNavigationItemSelectedListener {
+
+    private RecyclerView.LayoutManager mLayoutManager;
+    SearchResultsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +43,14 @@ public class MainActivity extends AppCompatActivity
         DoorDashDatabase database = new DoorDashDatabase(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        mAdapter = new SearchResultsAdapter();
+        mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(mAdapter);
+
+        getLoaderManager().initLoader(0, null, this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -41,11 +60,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        SearchResultsDataWriter writer = new SearchResultsDataWriter(this);
-        SearchResultFetcher fetcher = new SearchResultFetcher();
-        RefreshTask task = new RefreshTask(fetcher, writer);
-        new Thread(task).start();
     }
 
     @Override
@@ -95,5 +109,24 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri searchListUri = RestaurantsContentProvider.getSearchListUri();
+        return new CursorLoader(this, searchListUri, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+        if(data != null) {
+            mAdapter.swapCursor(data);
+            data.setNotificationUri(this.getContentResolver(), RestaurantsContentProvider.getSearchListUri());
+        }
+    }
+
+    @Override
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
     }
 }

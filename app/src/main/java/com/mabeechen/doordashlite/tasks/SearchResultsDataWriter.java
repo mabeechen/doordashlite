@@ -46,6 +46,7 @@ public class SearchResultsDataWriter implements DataWriter {
                     searchResult.getAsString(RestaurantTableColumns.DELIVERY_FEE));
             String businessId = searchResult.getAsString(RestaurantTableColumns.BUSINESS_ID);
             restaurantValues.put(RestaurantTableColumns.BUSINESS_ID, businessId);
+            restaurantValues.put(RestaurantTableColumns.NAME, searchResult.getAsString(RestaurantTableColumns.NAME));
             restaurantValues.put(RestaurantTableColumns.DESCRIPTION, searchResult.getAsString(RestaurantTableColumns.DESCRIPTION));
             restaurantValues.put(RestaurantTableColumns.AVG_RATING, searchResult.getAsDouble(RestaurantTableColumns.AVG_RATING));
             restaurantValues.put(RestaurantTableColumns.RATING_COUNT, searchResult.getAsInteger(RestaurantTableColumns.RATING_COUNT));
@@ -74,7 +75,7 @@ public class SearchResultsDataWriter implements DataWriter {
             int time = asapTime == null? 0 : asapTime.intValue();
 
             // Update or insert search result
-            int updatedSearchResultCount = SearchResultsDBHelper.updateSearchResultOnRestaurantId(mDatabase,restaurantId, statusType, statusText, time);
+            int updatedSearchResultCount = SearchResultsDBHelper.updateSearchResultOnRestaurantId(mDatabase, restaurantId, statusType, statusText, time);
             mUpdateCount += updatedSearchResultCount;
             if(updatedSearchResultCount == 0) {
                 SearchResultsDBHelper.insertSearchResult(mDatabase,restaurantId, statusType, statusText, time);

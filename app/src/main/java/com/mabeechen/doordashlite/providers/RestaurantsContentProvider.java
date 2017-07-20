@@ -6,6 +6,15 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.mabeechen.doordashlite.dbhelpers.SearchResultsDBHelper;
+import com.mabeechen.doordashlite.database.DoorDashDatabase;
+import com.mabeechen.doordashlite.tasks.RefreshState;
+import com.mabeechen.doordashlite.tasks.RefreshTask;
+import com.mabeechen.doordashlite.tasks.SearchResultFetcher;
+import com.mabeechen.doordashlite.tasks.SearchResultsDataWriter;
+import com.mabeechen.doordashlite.tasks.State;
 
 /**
  * Created by marbe on 7/16/2017.
@@ -17,7 +26,7 @@ public class RestaurantsContentProvider extends ContentProvider {
     public static Uri BASE_URI = Uri.parse(AUTHORITY);
     public static final String PROPERTIES_PATH = "PROPERTY";
     public static final String LIST_PATH = "SEARCHLIST";
-    private static final Uri LIST_URI = Uri.parse("content://" + AUTHORITY + "/"
+    public static final Uri LIST_URI = Uri.parse("content://" + AUTHORITY + "/"
             + LIST_PATH);
 
     /**
@@ -48,7 +57,16 @@ public class RestaurantsContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        // Check if we need a refresh
+        if(RefreshState.getInstance().needsRefresh()) {
+            // schedule if so
+            Log.d("Refresh State", "Refresh Required");
+            scheduleRefreshTask();
+        }
+        DoorDashDatabase data = new DoorDashDatabase(getContext());
+        Cursor c = SearchResultsDBHelper.querySearchResults(data.getWritableDatabase());
+        //c.setNotificationUri(getContext().getContentResolver(), LIST_URI);
+        return c;
     }
 
     @Nullable
@@ -73,7 +91,10 @@ public class RestaurantsContentProvider extends ContentProvider {
         return 0;
     }
 
-    private void runRefreshTask() {
-
+    private void scheduleRefreshTask() {
+        SearchResultsDataWriter writer = new SearchResultsDataWriter(getContext());
+        SearchResultFetcher fetcher = new SearchResultFetcher();
+        RefreshTask task = new RefreshTask(getContext(), fetcher, writer);
+        new Thread(task).start();
     }
 }
