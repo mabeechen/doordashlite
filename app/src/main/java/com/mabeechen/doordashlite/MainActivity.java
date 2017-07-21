@@ -1,18 +1,12 @@
 package com.mabeechen.doordashlite;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.content.Loader;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,11 +18,7 @@ import android.view.MenuItem;
 
 import com.mabeechen.doordashlite.adapters.SearchResultsAdapter;
 import com.mabeechen.doordashlite.database.DoorDashDatabase;
-import com.mabeechen.doordashlite.dbhelpers.SearchResultsDBHelper;
 import com.mabeechen.doordashlite.providers.RestaurantsContentProvider;
-import com.mabeechen.doordashlite.tasks.RefreshTask;
-import com.mabeechen.doordashlite.tasks.SearchResultFetcher;
-import com.mabeechen.doordashlite.tasks.SearchResultsDataWriter;
 
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor>, NavigationView.OnNavigationItemSelectedListener {

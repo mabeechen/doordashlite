@@ -1,4 +1,4 @@
-package com.mabeechen.doordashlite.tasks;
+package com.mabeechen.doordashlite.servicetasks;
 
 /**
  * Used to indicate the refresh state of something we need to retrieve service-based values for.

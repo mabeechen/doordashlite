@@ -1,6 +1,6 @@
-package com.mabeechen.doordashlite.tasks;
+package com.mabeechen.doordashlite.servicetasks;
 
-import com.mabeechen.doordashlite.tasks.models.SearchResult;
+import com.mabeechen.doordashlite.servicetasks.models.SearchResult;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.mabeechen.doordashlite.tasks;
+package com.mabeechen.doordashlite.servicetasks;
 
 import android.content.ContentValues;
 import android.content.Context;

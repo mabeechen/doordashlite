@@ -1,6 +1,5 @@
 package com.mabeechen.doordashlite.adapters;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mabeechen.doordashlite.R;
-import com.mabeechen.doordashlite.database.*;
-import com.mabeechen.doordashlite.dbhelpers.RestaurantsDBHelper;
 import com.mabeechen.doordashlite.providers.RestaurantsContentProvider;
 
 import java.io.IOException;
@@ -59,7 +56,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             holder.vName.setText(name);
             String imageUrl = mCursor.getString(mCursor.getColumnIndex(RestaurantTableColumns.IMAGE_URL));
             if(!imageUrl.isEmpty()) {
-                ViewLoader loader = new ViewLoader(holder.vImage, imageUrl);
+                GhettoLoader loader = new GhettoLoader(holder.vImage, imageUrl);
                 new Thread(loader).start();
             }
             String description = mCursor.getString(mCursor.getColumnIndex(RestaurantTableColumns.DESCRIPTION));
@@ -117,7 +114,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         notifyDataSetChanged();
     }
 
-
+    /**
+     * View holder for the adapter
+     */
     public static class SearchResultViewHolder extends RecyclerView.ViewHolder {
         protected TextView vName;
         protected ImageView vImage;
@@ -136,14 +135,21 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
 
     /**
-     * Ghetto image downloader.
+     * Ghetto image downloader.  This is pretty ghetto.
      * Stole most of this from here: https://stackoverflow.com/questions/2471935/how-to-load-an-imageview-by-url-in-android
-     * Was considering doing something more elaborate here.
+     * Was considering doing something more elaborate here but was running short on time at that point.
+     * If you all decide to proceed I'll likely clean this up before the interview.
      */
-    private class ViewLoader implements Runnable {
+    private class GhettoLoader implements Runnable {
         private final ImageView mImage;
         private String mUrl;
-        public ViewLoader(ImageView image, String Url) {
+
+        /**
+         * Constructor
+         * @param image The image view to load an image for
+         * @param Url The url of the image to load
+         */
+        public GhettoLoader(ImageView image, String Url) {
             mImage = image;
             mUrl = Url;
         }
@@ -153,6 +159,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             LoadImage();
         }
 
+        /**
+         * Loads an image into the control
+         */
         private void LoadImage()
         {
             Bitmap bitmap = null;
@@ -174,6 +183,12 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             });
         }
 
+        /**
+         * Creates an httpsConnection
+         * @param strURL
+         * @return
+         * @throws IOException
+         */
         private InputStream OpenHttpConnection(String strURL) throws IOException{
             InputStream inputStream = null;
             URL url = new URL(strURL);

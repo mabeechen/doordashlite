@@ -1,19 +1,17 @@
-package com.mabeechen.doordashlite.tasks;
+package com.mabeechen.doordashlite.servicetasks;
 
 import android.content.ContentValues;
 import android.util.Log;
 
-import com.mabeechen.doordashlite.database.DoorDashDatabase;
-import com.mabeechen.doordashlite.tasks.models.Address;
-import com.mabeechen.doordashlite.tasks.models.Business;
-import com.mabeechen.doordashlite.tasks.models.SearchResult;
+import com.mabeechen.doordashlite.servicetasks.models.Address;
+import com.mabeechen.doordashlite.servicetasks.models.Business;
+import com.mabeechen.doordashlite.servicetasks.models.SearchResult;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

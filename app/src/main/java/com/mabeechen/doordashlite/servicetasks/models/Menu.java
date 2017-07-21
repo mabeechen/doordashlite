@@ -1,5 +1,5 @@
 
-package com.mabeechen.doordashlite.tasks.models;
+package com.mabeechen.doordashlite.servicetasks.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

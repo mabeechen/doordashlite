@@ -13,11 +13,11 @@ import android.util.Log;
 import com.mabeechen.doordashlite.dbhelpers.RestaurantsDBHelper;
 import com.mabeechen.doordashlite.dbhelpers.SearchResultsDBHelper;
 import com.mabeechen.doordashlite.database.DoorDashDatabase;
-import com.mabeechen.doordashlite.tasks.RefreshState;
-import com.mabeechen.doordashlite.tasks.RefreshTask;
-import com.mabeechen.doordashlite.tasks.SearchResultFetcher;
-import com.mabeechen.doordashlite.tasks.SearchResultsDataWriter;
-import com.mabeechen.doordashlite.tasks.State;
+import com.mabeechen.doordashlite.servicetasks.RefreshState;
+import com.mabeechen.doordashlite.servicetasks.RefreshTask;
+import com.mabeechen.doordashlite.servicetasks.SearchResultFetcher;
+import com.mabeechen.doordashlite.servicetasks.SearchResultsDataWriter;
+
 import static com.mabeechen.doordashlite.database.DoorDashDatabase.*;
 /**
  * The provider for restaurant-related data and searches
