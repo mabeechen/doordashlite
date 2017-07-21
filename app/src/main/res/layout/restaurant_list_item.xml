@@ -7,9 +7,9 @@
     <ImageView
         android:id="@+id/restaurant_image"
         android:layout_alignParentLeft="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="center"
+        android:layout_width="110dp"
+        android:layout_height="58dp"
+        android:scaleType="fitCenter"
         android:layout_margin="15dp"
         android:layout_marginRight="25dp"/>
 

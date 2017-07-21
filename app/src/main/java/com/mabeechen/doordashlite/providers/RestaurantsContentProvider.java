@@ -99,6 +99,8 @@ public class RestaurantsContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
+        // The second I add another command I'll need to do something here for it, but since I only
+        // have one action right now I don't need any more.
         String business_ID = arg;
         DoorDashDatabase data = new DoorDashDatabase(getContext());
         SQLiteDatabase db = data.getWritableDatabase();

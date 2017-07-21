@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
-
+        getSupportActionBar().setTitle(getResources().getString(R.string.discover));
         getLoaderManager().initLoader(0, null, this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -101,8 +101,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_discover) {
-
-        } else if (id == R.id.nav_settings) {
 
         }
 
