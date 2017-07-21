@@ -39,7 +39,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="25dp"
-        android:layout_toRightOf="@id/restaurant_image">
+        android:layout_toRightOf="@id/restaurant_image"
+        android:layout_toLeftOf="@id/favorite_time">
 
         <TextView
             android:id="@+id/restaurant_name_text"
