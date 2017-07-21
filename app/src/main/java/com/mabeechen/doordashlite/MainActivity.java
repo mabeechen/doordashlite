@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        mAdapter = new SearchResultsAdapter();
+        mAdapter = new SearchResultsAdapter(this);
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mAdapter);
@@ -129,4 +129,5 @@ public class MainActivity extends AppCompatActivity
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
     }
+
 }
