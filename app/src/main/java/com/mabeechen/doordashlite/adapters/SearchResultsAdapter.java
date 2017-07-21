@@ -63,9 +63,26 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             }
             String description = mCursor.getString(mCursor.getColumnIndex(RestaurantTableColumns.DESCRIPTION));
             holder.vDescription.setText(description);
-            int time = mCursor.getInt(mCursor.getColumnIndex(SearchResultsTableColumns.ASAP_TIME));
-            String timeString = Integer.toString(time);
-            holder.vDeliveryTime.setText(timeString);
+
+            StatusType type = StatusType.values()[mCursor.getInt(mCursor.getColumnIndex(SearchResultsTableColumns.STATUS_TYPE))];
+
+
+            String time = mCursor.getString(mCursor.getColumnIndex(SearchResultsTableColumns.STATUS_TEXT));
+            switch(type) {
+                case OPEN:
+                    holder.vDeliveryTime.setText(time);
+                    break;
+                case PRE_ORDER:
+                    holder.vDeliveryTime.setText(mContext.getResources().getText(R.string.status_pre_order));
+                    break;
+                case UNAVAILABLE:
+                    holder.vDeliveryTime.setText(mContext.getResources().getText(R.string.status_closed));
+                    break;
+                case UNKNOWN:
+                    holder.vDeliveryTime.setText("");
+                    break;
+            }
+
             boolean isFavorite = mCursor.getInt(mCursor.getColumnIndex(RestaurantTableColumns.IS_FAVORITE)) > 0? true: false;
             if(isFavorite) {
                 holder.vFavoriteImage.setImageResource(R.mipmap.ic_star_black_24dp);
@@ -144,7 +161,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 bitmap = BitmapFactory.decodeStream(in, null, new BitmapFactory.Options());
                 in.close();
             } catch (IOException e1) {
-                Log.d("Stream download Failed", "Painful");
+                Log.d("Stream download Failed", "Sigh!!!");
             }
             final Bitmap finalMap = bitmap;
 
@@ -172,7 +189,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             }
             catch (Exception ex)
             {
-                Log.d("HTTP Connection Failed", "Painful");
+                Log.d("HTTP Connection Failed", "Double Sigh!");
             }
             return inputStream;
         }

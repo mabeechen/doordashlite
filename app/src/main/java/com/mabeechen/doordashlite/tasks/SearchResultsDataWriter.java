@@ -22,6 +22,10 @@ public class SearchResultsDataWriter implements DataWriter {
     private SQLiteDatabase mDatabase;
     private long mInsertCount, mUpdateCount;
 
+    /**
+     * Constructor
+     * @param context The context used to create the writer
+     */
     public SearchResultsDataWriter(Context context) {
         DoorDashDatabase db = new DoorDashDatabase(context);
         mDatabase = db.getWritableDatabase();

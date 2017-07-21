@@ -19,8 +19,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.mabeechen.doordashlite.database.DoorDashDatabase.*;
+
 /**
- * Created by marbe on 7/18/2017.
+ * Fetches restaurant search result data from doordash service
+ *
+ * @author mabeechen
+ * @since 7/20/17
  */
 public class SearchResultFetcher implements Fetcher {
     private List<ContentValues> mData = new ArrayList<>();
@@ -31,26 +35,14 @@ public class SearchResultFetcher implements Fetcher {
 
         try {
             String API_BASE_URL = "https://api.doordash.com/";
-
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
-            Retrofit.Builder builder =
-                    new Retrofit.Builder()
-                            .baseUrl(API_BASE_URL)
-                            .addConverterFactory(
-                                    GsonConverterFactory.create()
-                            );
-
-            Retrofit retrofit =
-                    builder
-                            .client(
-                                    httpClient.build()
-                            )
-                            .build();
+            Retrofit.Builder builder = new Retrofit.Builder().baseUrl(API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create());
+            Retrofit retrofit = builder.client(httpClient.build()).build();
 
             DoorDashService client = retrofit.create(DoorDashService.class);
             Response<List<SearchResult>> call = client.getSearchResults().execute();
-            if(call.isSuccessful()) {
+            if (call.isSuccessful()) {
                 Log.d("FetcherWorked", Integer.toString(call.body().size()));
                 fetchWorked = true;
                 List<SearchResult> results = call.body();
@@ -61,13 +53,10 @@ public class SearchResultFetcher implements Fetcher {
             }
         } catch (RuntimeException ex) {
             Log.d("FetcherFailed", "RuntimeException");
-            Log.d("Failed Message", ex.getMessage());
             fetchWorked = false;
         } catch (IOException ex) {
             Log.d("FetcherFailed", "IOException");
             fetchWorked = false;
-        } finally {
-
         }
 
         return fetchWorked;
@@ -78,12 +67,17 @@ public class SearchResultFetcher implements Fetcher {
         return mData;
     }
 
+    /**
+     * Parses the data retrieved from the service into an understandable list
+     *
+     * @param results The parsed list of json values from the service.
+     */
     private void parseData(List<SearchResult> results) {
-        for(SearchResult result : results) {
+        for (SearchResult result : results) {
             ContentValues values = new ContentValues();
             values.put(RestaurantTableColumns.DELIVERY_FEE, result.getDeliveryFee());
             values.put(RestaurantTableColumns.BUSINESS_ID, result.getBusinessId());
-            if(result.getBusiness() != null) {
+            if (result.getBusiness() != null) {
                 Business business = result.getBusiness();
                 values.put(RestaurantTableColumns.NAME, business.getName());
             }
@@ -92,7 +86,7 @@ public class SearchResultFetcher implements Fetcher {
             values.put(RestaurantTableColumns.RATING_COUNT, result.getYelpReviewCount());
             values.put(RestaurantTableColumns.DD_PARTIAL_URL, result.getUrl());
             values.put(RestaurantTableColumns.IMAGE_URL, result.getCoverImgUrl());
-            if(result.getAddress() != null) {
+            if (result.getAddress() != null) {
                 Address address = result.getAddress();
                 values.put(RestaurantTableColumns.STREET, address.getStreet());
                 values.put(RestaurantTableColumns.CITY, address.getCity());
@@ -111,12 +105,11 @@ public class SearchResultFetcher implements Fetcher {
      * Creates a status type based on the json string value passed in
      *
      * @param statusTypeString The json string representation of statusType
-     *
      * @return The status type, unknown if it's not recognized
      */
     private StatusType parseStatusType(String statusTypeString) {
         StatusType retVal = StatusType.UNKNOWN;
-        switch(statusTypeString) {
+        switch (statusTypeString) {
             case "open":
                 retVal = StatusType.OPEN;
                 break;
