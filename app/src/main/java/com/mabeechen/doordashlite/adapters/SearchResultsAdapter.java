@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.mabeechen.doordashlite.R;
 import com.mabeechen.doordashlite.database.*;
 import com.mabeechen.doordashlite.dbhelpers.RestaurantsDBHelper;
+import com.mabeechen.doordashlite.providers.RestaurantsContentProvider;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -200,11 +201,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         @Override
         public void onClick(View v) {
             String businessID = (String)v.getTag();
-            DoorDashDatabase data = new DoorDashDatabase(mContext);
-            ContentValues values = new ContentValues();
-            values.put(RestaurantTableColumns.IS_FAVORITE, true);
-
-            RestaurantsDBHelper.updateRestaurantOnBusinessId(data.getWritableDatabase(), businessID, values);
+            mContext.getContentResolver().call(RestaurantsContentProvider.LIST_URI, "Offline", businessID, null);
         }
     }
 }

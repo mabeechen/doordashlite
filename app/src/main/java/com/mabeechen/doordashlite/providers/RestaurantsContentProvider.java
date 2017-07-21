@@ -3,11 +3,14 @@ package com.mabeechen.doordashlite.providers;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.mabeechen.doordashlite.dbhelpers.RestaurantsDBHelper;
 import com.mabeechen.doordashlite.dbhelpers.SearchResultsDBHelper;
 import com.mabeechen.doordashlite.database.DoorDashDatabase;
 import com.mabeechen.doordashlite.tasks.RefreshState;
@@ -15,11 +18,13 @@ import com.mabeechen.doordashlite.tasks.RefreshTask;
 import com.mabeechen.doordashlite.tasks.SearchResultFetcher;
 import com.mabeechen.doordashlite.tasks.SearchResultsDataWriter;
 import com.mabeechen.doordashlite.tasks.State;
-
+import static com.mabeechen.doordashlite.database.DoorDashDatabase.*;
 /**
- * Created by marbe on 7/16/2017.
+ * The provider for restaurant-related data and searches
+ *
+ * @author mabeechen
+ * @since 7/21/17
  */
-
 public class RestaurantsContentProvider extends ContentProvider {
 
     public static final String AUTHORITY = "com.mabeechen.doordashlite.restaurants";
@@ -89,6 +94,25 @@ public class RestaurantsContentProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         return 0;
+    }
+
+    @Nullable
+    @Override
+    public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
+        String business_ID = arg;
+        DoorDashDatabase data = new DoorDashDatabase(getContext());
+        SQLiteDatabase db = data.getWritableDatabase();
+        Cursor c = RestaurantsDBHelper.queryRestaurantonBusinessId(db, business_ID);
+        if(c.moveToFirst()) {
+            boolean newFavoriteValue = c.getInt(c.getColumnIndex(RestaurantTableColumns.IS_FAVORITE)) > 0 ? false : true;
+            c.close();
+            ContentValues values = new ContentValues();
+            values.put(RestaurantTableColumns.IS_FAVORITE, newFavoriteValue);
+
+            RestaurantsDBHelper.updateRestaurantOnBusinessId(db, business_ID, values);
+        }
+        getContext().getContentResolver().notifyChange(RestaurantsContentProvider.getSearchListUri(), null);
+        return null;
     }
 
     private void scheduleRefreshTask() {
