@@ -4,6 +4,9 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,9 +38,26 @@ public class RestaurantsContentProvider extends ContentProvider {
             + LIST_PATH);
 
     /**
+     * Gets a search list uri for the passed in location info
+     *
+     * @param latitude latitude to look up
+     * @param longitude longitude to look up
+     *
+     * @return A search uri
+     */
+    public static Uri getSearchListUri(double latitude, double longitude) {
+        StringBuilder newUrl = new StringBuilder(LIST_URI.toString());
+        newUrl.append("?lat=");
+        newUrl.append(Double.toString(latitude));
+        newUrl.append("&lng=");
+        newUrl.append(Double.toString(longitude));
+        return Uri.parse(newUrl.toString());
+    }
+
+    /**
      * Gets a restaurant search results list uri
      *
-     * @return The uri
+     * @return The search uri
      */
     public static Uri getSearchListUri() {
         return LIST_URI;
@@ -66,7 +86,9 @@ public class RestaurantsContentProvider extends ContentProvider {
         if(RefreshState.getInstance().needsRefresh()) {
             // schedule if so
             Log.d("Refresh State", "Refresh Required");
-            scheduleRefreshTask();
+            double lat = Double.parseDouble(uri.getQueryParameters("lat").get(0));
+            double lng = Double.parseDouble(uri.getQueryParameters("lng").get(0));
+            scheduleRefreshTask(lat, lng);
         }
         DoorDashDatabase data = new DoorDashDatabase(getContext());
         Cursor c = SearchResultsDBHelper.querySearchResults(data.getWritableDatabase());
@@ -117,10 +139,12 @@ public class RestaurantsContentProvider extends ContentProvider {
         return null;
     }
 
-    private void scheduleRefreshTask() {
+    private void scheduleRefreshTask(double latitude, double longitude) {
         SearchResultsDataWriter writer = new SearchResultsDataWriter(getContext());
-        SearchResultFetcher fetcher = new SearchResultFetcher();
+        SearchResultFetcher fetcher = new SearchResultFetcher(latitude, longitude);
         RefreshTask task = new RefreshTask(getContext(), fetcher, writer);
         new Thread(task).start();
     }
+
+
 }

@@ -1,6 +1,10 @@
 package com.mabeechen.doordashlite;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.LoaderManager;
@@ -13,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,15 +29,19 @@ public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor>, NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView.LayoutManager mLayoutManager;
+    private Uri mSearchUri = null;
     SearchResultsAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DoorDashDatabase database = new DoorDashDatabase(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mSearchUri = RestaurantsContentProvider.getSearchListUri(37.422740, -122.139956);
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         mAdapter = new SearchResultsAdapter(this);
@@ -101,15 +110,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri searchListUri = RestaurantsContentProvider.getSearchListUri();
-        return new CursorLoader(this, searchListUri, null, null, null, null);
+        return new CursorLoader(this, mSearchUri, null, null, null, null);
     }
 
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
         if(data != null) {
             mAdapter.swapCursor(data);
-            data.setNotificationUri(this.getContentResolver(), RestaurantsContentProvider.getSearchListUri());
+            data.setNotificationUri(this.getContentResolver(), mSearchUri);
         }
     }
 

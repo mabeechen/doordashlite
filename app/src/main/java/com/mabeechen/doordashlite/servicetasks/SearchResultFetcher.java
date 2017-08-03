@@ -9,7 +9,9 @@ import com.mabeechen.doordashlite.servicetasks.models.SearchResult;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Response;
@@ -26,6 +28,13 @@ import static com.mabeechen.doordashlite.database.DoorDashDatabase.*;
  */
 public class SearchResultFetcher implements Fetcher {
     private List<ContentValues> mData = new ArrayList<>();
+    private double mLatitude;
+    private double mLongitude;
+
+    public SearchResultFetcher(double latitude, double longitude) {
+        mLatitude = latitude;
+        mLongitude = longitude;
+    }
 
     @Override
     public boolean fetchData() {
@@ -39,7 +48,10 @@ public class SearchResultFetcher implements Fetcher {
             Retrofit retrofit = builder.client(httpClient.build()).build();
 
             DoorDashService client = retrofit.create(DoorDashService.class);
-            Response<List<SearchResult>> call = client.getSearchResults().execute();
+            HashMap<String, String> queryMap = new HashMap<String, String>();
+            queryMap.put("lat",Double.toString(mLatitude));
+            queryMap.put("lng", Double.toString(mLongitude));
+            Response<List<SearchResult>> call = client.getSearchResults(queryMap).execute();
             if (call.isSuccessful()) {
                 Log.d("FetcherWorked", Integer.toString(call.body().size()));
                 fetchWorked = true;
