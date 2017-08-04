@@ -1,6 +1,7 @@
 package com.mabeechen.doordashlite.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mabeechen.doordashlite.R;
+import com.mabeechen.doordashlite.RestaurantChosenActivity;
 import com.mabeechen.doordashlite.providers.RestaurantsContentProvider;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     private Cursor mCursor;
     private Context mContext;
     private OnFavoriteButtonClickListener mFavoriteClickListener = new OnFavoriteButtonClickListener();
+    private OnItemClickListener mItemListener = new OnItemClickListener();
 
     public SearchResultsAdapter (Context context) {
         mContext = context;
@@ -90,6 +93,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             String businessId = mCursor.getString(mCursor.getColumnIndex(RestaurantTableColumns.BUSINESS_ID));
             holder.vFavoriteImage.setTag(businessId);
             holder.vFavoriteImage.setOnClickListener(mFavoriteClickListener);
+            holder.vImage.setOnClickListener(mItemListener);
         }
     }
 
@@ -211,12 +215,40 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         }
     }
 
+    /**
+     * Handles clicking on the favorite button
+     *
+     * @author mabeechen
+     * @since 8/3/17
+     */
     private class OnFavoriteButtonClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
             String businessID = (String)v.getTag();
             mContext.getContentResolver().call(RestaurantsContentProvider.LIST_URI, "Offline", businessID, null);
+        }
+    }
+
+    /**
+     *
+     */
+    private class OnItemClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            String businessID = (String)v.getTag();
+
+            try {
+                Intent intent = new Intent(mContext, RestaurantChosenActivity.class);
+//            intent.putExtra(SimpleDialogActivity.TITLE_KEY, title);
+//            intent.putExtra(SimpleDialogActivity.MESSAGE_KEY, message);
+//            intent.putExtra(SimpleDialogActivity.POSITIVE_BUTTON_TITLE_KEY, dismissButtonText);
+
+                mContext.startActivity(intent);
+            } catch (Exception ex) {
+                Log.d("Error", ex.getMessage());
+            }
         }
     }
 }
