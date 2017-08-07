@@ -231,7 +231,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
 
     /**
-     *
+     * Handles tapping on the item
      */
     private class OnItemClickListener implements View.OnClickListener {
 
